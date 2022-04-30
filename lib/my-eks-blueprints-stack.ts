@@ -10,6 +10,7 @@ export default class ClusterConstruct extends Construct {
     const blueprint = blueprints.EksBlueprint.builder()
     .account(props?.env?.account)
     .region(props?.env?.region)
+    .addOns(new blueprints.addons.SecretsStoreAddOn)
     .addOns(new NewRelicAddOn({
       newRelicClusterName: "my-eks-blueprints-workshop",
       awsSecretName: "my-eks-blueprints-workshop"
