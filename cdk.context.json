@@ -1,0 +1,38 @@
+{
+  "availability-zones:account=842919758536:region=us-west-2": [
+    "us-west-2a",
+    "us-west-2b",
+    "us-west-2c",
+    "us-west-2d",
+    "us-west-2-wl1-den-wlz-1",
+    "us-west-2-wl1-las-wlz-1",
+    "us-west-2-wl1-lax-wlz-1",
+    "us-west-2-wl1-phx-wlz-1",
+    "us-west-2-wl1-sea-wlz-1",
+    "us-west-2-wl1-sfo-wlz-1"
+  ],
+  "availability-zones:account=842919758536:region=us-east-2": [
+    "us-east-2a",
+    "us-east-2b",
+    "us-east-2c"
+  ],
+  "availability-zones:account=842919758536:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f",
+    "us-east-1-wl1-atl-wlz-1",
+    "us-east-1-wl1-bos-wlz-1",
+    "us-east-1-wl1-chi-wlz-1",
+    "us-east-1-wl1-clt-wlz-1",
+    "us-east-1-wl1-dfw-wlz-1",
+    "us-east-1-wl1-dtw-wlz-1",
+    "us-east-1-wl1-iah-wlz-1",
+    "us-east-1-wl1-mia-wlz-1",
+    "us-east-1-wl1-msp-wlz-1",
+    "us-east-1-wl1-nyc-wlz-1",
+    "us-east-1-wl1-was-wlz-1"
+  ]
+}
