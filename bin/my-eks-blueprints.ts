@@ -9,4 +9,4 @@ const region = process.env.CDK_DEFAULT_REGION;
 const env = { account, region }
 
 new ClusterConstruct(app, 'my-eks-blueprints', { env });
-new PipelineConstruct(app, 'pipeline', { env });
+new PipelineConstruct(app, 'workshop-pipeline', { env });
