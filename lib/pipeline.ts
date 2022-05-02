@@ -13,8 +13,7 @@ export default class PipelineConstruct extends Construct {
 
     const commonaddOns: Array<blueprints.ClusterAddOn> = [
       new blueprints.SecretsStoreAddOn,
-      new blueprints.ClusterAutoScalerAddOn,
-      new blueprints.ArgoCDAddOn
+      new blueprints.ClusterAutoScalerAddOn
     ];
 
     const blueprint = blueprints.EksBlueprint.builder()
