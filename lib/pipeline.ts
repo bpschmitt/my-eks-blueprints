@@ -7,12 +7,18 @@ export default class PipelineConstruct extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps){
     super(scope,id)
 
+    const commonaddOns: Array<blueprints.ClusterAddOn> = [
+      new blueprints.SecretsStoreAddOn,
+      new blueprints.ClusterAutoScalerAddOn,
+      new blueprints.ArgoCDAddOn
+    ];
+
     const blueprintDev = blueprints.EksBlueprint.builder()
     .account(props?.env?.account)
     .region(props?.env?.region)
-    .addOns(new blueprints.SecretsStoreAddOn)
+    .addOns(...commonaddOns)
     .addOns(new NewRelicAddOn({
-      newRelicClusterName: "my-eks-blueprints-workshop-dev",
+      newRelicClusterName: "eks-blueprints-workshop-dev",
       awsSecretName: "my-eks-blueprints-workshop"
     }))
     .teams();
@@ -20,9 +26,9 @@ export default class PipelineConstruct extends Construct {
     const blueprintProd = blueprints.EksBlueprint.builder()
     .account(props?.env?.account)
     .region(props?.env?.region)
-    .addOns(new blueprints.SecretsStoreAddOn)
+    .addOns(...commonaddOns)
     .addOns(new NewRelicAddOn({
-      newRelicClusterName: "my-eks-blueprints-workshop-prod",
+      newRelicClusterName: "eks-blueprints-workshop-prod",
       awsSecretName: "my-eks-blueprints-workshop"
     }))
     .teams();
