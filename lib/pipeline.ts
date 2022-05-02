@@ -2,10 +2,14 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as blueprints from '@aws-quickstart/eks-blueprints';
 import { NewRelicAddOn } from '@newrelic/newrelic-eks-blueprints-addon';
+import { TeamApplication, TeamPlatform } from '../teams';
 
 export default class PipelineConstruct extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps){
     super(scope,id)
+
+    const account = props?.env?.account!;
+    const region = props?.env?.region!;
 
     const commonaddOns: Array<blueprints.ClusterAddOn> = [
       new blueprints.SecretsStoreAddOn,
@@ -14,18 +18,18 @@ export default class PipelineConstruct extends Construct {
     ];
 
     const blueprintDev = blueprints.EksBlueprint.builder()
-    .account(props?.env?.account)
-    .region(props?.env?.region)
+    .account(account)
+    .region(region)
     .addOns(...commonaddOns)
     .addOns(new NewRelicAddOn({
       newRelicClusterName: "eks-blueprints-workshop-dev",
       awsSecretName: "my-eks-blueprints-workshop"
     }))
-    .teams();
+    .teams(new TeamPlatform(account), new TeamApplication('schmitt', account));
 
     const blueprintProd = blueprints.EksBlueprint.builder()
-    .account(props?.env?.account)
-    .region(props?.env?.region)
+    .account(account)
+    .region(region)
     .addOns(...commonaddOns)
     .addOns(new NewRelicAddOn({
       newRelicClusterName: "eks-blueprints-workshop-prod",
