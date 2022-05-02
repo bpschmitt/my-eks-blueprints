@@ -35,7 +35,7 @@ export default class PipelineConstruct extends Construct {
       newRelicClusterName: "eks-blueprints-workshop-prod",
       awsSecretName: "my-eks-blueprints-workshop"
     }))
-    .teams();
+    .teams(new TeamPlatform(account), new TeamApplication('schmitt', account));
 
     blueprints.CodePipelineStack.builder()
       .name("eks-blueprints-workshop-pipeline")
