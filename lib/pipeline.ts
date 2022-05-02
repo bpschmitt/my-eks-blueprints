@@ -17,25 +17,32 @@ export default class PipelineConstruct extends Construct {
       new blueprints.ArgoCDAddOn
     ];
 
-    const blueprintDev = blueprints.EksBlueprint.builder()
+    const blueprint = blueprints.EksBlueprint.builder()
     .account(account)
     .region(region)
     .addOns(...commonaddOns)
-    .addOns(new NewRelicAddOn({
-      newRelicClusterName: "eks-blueprints-workshop-dev",
-      awsSecretName: "my-eks-blueprints-workshop"
-    }))
     .teams(new TeamPlatform(account), new TeamApplication('schmitt', account));
 
-    const blueprintProd = blueprints.EksBlueprint.builder()
-    .account(account)
-    .region(region)
-    .addOns(...commonaddOns)
-    .addOns(new NewRelicAddOn({
-      newRelicClusterName: "eks-blueprints-workshop-prod",
-      awsSecretName: "my-eks-blueprints-workshop"
-    }))
-    .teams(new TeamPlatform(account), new TeamApplication('schmitt', account));
+    const repoUrl = 'https://github.com/aws-samples/eks-blueprints-workloads.git';
+
+    const bootstrapRepo : blueprints.ApplicationRepository = {
+      repoUrl,
+      targetRevision: 'workshop'
+    }
+
+    const devBootstrapArgo = new blueprints.ArgoCDAddOn({
+      bootstrapRepo: {
+        ...bootstrapRepo,
+        path: 'envs/dev'
+      },
+    });
+
+    const prodBootstrapArgo = new blueprints.ArgoCDAddOn({
+      bootstrapRepo: {
+        ...bootstrapRepo,
+        path: 'envs/prod'
+      },
+    });
 
     blueprints.CodePipelineStack.builder()
       .name("eks-blueprints-workshop-pipeline")
@@ -48,8 +55,18 @@ export default class PipelineConstruct extends Construct {
       .wave({
         id: "envs",
         stages: [
-          { id: "dev", stackBuilder: blueprintDev.clone('us-east-1')},
-          { id: "prod", stackBuilder: blueprintProd.clone('us-west-2')}
+          { id: "dev", stackBuilder: blueprint.clone('us-east-1')
+          .addOns(new NewRelicAddOn({
+            newRelicClusterName: "eks-blueprints-workshop-dev",
+            awsSecretName: "my-eks-blueprints-workshop"
+          }))
+        .addOns(devBootstrapArgo)},
+          { id: "prod", stackBuilder: blueprint.clone('us-west-2')
+          .addOns(new NewRelicAddOn({
+            newRelicClusterName: "eks-blueprints-workshop-prod",
+            awsSecretName: "my-eks-blueprints-workshop"
+          }))
+        .addOns(prodBootstrapArgo)}
         ]
       })
       .build(scope, id+'-stack', props);
