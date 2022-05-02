@@ -1,14 +1,3 @@
-# Welcome to your CDK TypeScript project
+# EKS Blueprints Workshop
 
-This is a blank project for CDK development with TypeScript.
-
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
-
-## Useful commands
-
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+This repo contains output from the [EKS Blueprints for CDK Workshop](https://github.com/aws-samples/eks-blueprints-for-cdk-workshop).  The examples contained in this repo have been adapted to include the [New Relic Addon for EKS Blueprints](https://github.com/newrelic-experimental/newrelic-eks-blueprints-addon) and may differ slightly from the original workshop examples.
