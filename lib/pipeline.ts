@@ -22,11 +22,11 @@ export default class PipelineConstruct extends Construct {
     .addOns(...commonaddOns)
     .teams(new TeamPlatform(account), new TeamApplication('schmitt', account));
 
-    const repoUrl = 'https://github.com/aws-samples/eks-blueprints-workloads.git';
+    const repoUrl = 'https://github.com/bpschmitt/eks-blueprints-workloads.git';
 
     const bootstrapRepo : blueprints.ApplicationRepository = {
       repoUrl,
-      targetRevision: 'workshop'
+      targetRevision: 'nerdtalk'
     }
 
     const devBootstrapArgo = new blueprints.ArgoCDAddOn({
