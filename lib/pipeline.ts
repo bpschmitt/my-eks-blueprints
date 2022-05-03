@@ -16,6 +16,29 @@ export default class PipelineConstruct extends Construct {
       new blueprints.ClusterAutoScalerAddOn
     ];
 
+    const devClusterProvider = new blueprints.GenericClusterProvider({
+      version: cdk.aws_eks.KubernetesVersion.V1_22,
+      managedNodeGroups: [
+        {
+          id: "mng-spot",
+          amiType: cdk.aws_eks.NodegroupAmiType.AL2_X86_64,
+          instanceTypes: [new cdk.aws_ec2.InstanceType('m5.large')],
+          nodeGroupCapacityType: cdk.aws_eks.CapacityType.SPOT
+        }
+      ]
+    })
+
+    const prodClusterProvider = new blueprints.GenericClusterProvider({
+      version: cdk.aws_eks.KubernetesVersion.V1_22,
+      managedNodeGroups: [
+        {
+          id: "mng-ondemand",
+          amiType: cdk.aws_eks.NodegroupAmiType.BOTTLEROCKET_X86_64,
+          instanceTypes: [new cdk.aws_ec2.InstanceType('m5.xlarge')]
+        }
+      ]
+    })
+
     const blueprint = blueprints.EksBlueprint.builder()
     .account(account)
     .region(region)
@@ -59,13 +82,15 @@ export default class PipelineConstruct extends Construct {
             newRelicClusterName: "eks-blueprints-workshop-dev",
             awsSecretName: "my-eks-blueprints-workshop"
           }))
-        .addOns(devBootstrapArgo)},
+        .addOns(devBootstrapArgo)
+        .clusterProvider(devClusterProvider)},
           { id: "prod", stackBuilder: blueprint.clone('us-west-2')
           .addOns(new NewRelicAddOn({
             newRelicClusterName: "eks-blueprints-workshop-prod",
             awsSecretName: "my-eks-blueprints-workshop"
           }))
-        .addOns(prodBootstrapArgo)}
+        .addOns(prodBootstrapArgo)
+        .clusterProvider(prodClusterProvider)}
         ]
       })
       .build(scope, id+'-stack', props);
