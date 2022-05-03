@@ -17,7 +17,7 @@ export default class PipelineConstruct extends Construct {
     ];
 
     const devClusterProvider = new blueprints.GenericClusterProvider({
-      version: cdk.aws_eks.KubernetesVersion.V1_22,
+      version: cdk.aws_eks.KubernetesVersion.V1_21,
       managedNodeGroups: [
         {
           id: "mng-spot",
@@ -29,7 +29,7 @@ export default class PipelineConstruct extends Construct {
     })
 
     const prodClusterProvider = new blueprints.GenericClusterProvider({
-      version: cdk.aws_eks.KubernetesVersion.V1_22,
+      version: cdk.aws_eks.KubernetesVersion.V1_21,
       managedNodeGroups: [
         {
           id: "mng-ondemand",
