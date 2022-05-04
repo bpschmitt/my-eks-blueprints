@@ -85,6 +85,7 @@ export default class PipelineConstruct extends Construct {
       .wave({
         id: "envs",
         stages: [
+          // Dev
           { id: "dev", stackBuilder: blueprint.clone('us-east-1')
           .addOns(new NewRelicAddOn({
             version: "4.3.1-beta",
@@ -93,13 +94,15 @@ export default class PipelineConstruct extends Construct {
             installPixie: true,
             installPixieIntegration: true
           }))
-        .addOns(devBootstrapArgo)
-        .clusterProvider(devClusterProvider)},
+          .addOns(devBootstrapArgo)
+          .clusterProvider(devClusterProvider)},
+          // Prod
           { id: "prod", stackBuilder: blueprint.clone('us-west-2')
-          .addOns(new NewRelicAddOn({
-            newRelicClusterName: "eks-blueprints-workshop-prod",
-            awsSecretName: "newrelic-pixie-combined"
-          }))
+          // .addOns(new NewRelicAddOn({
+          //   version: "4.3.1-beta",
+          //   newRelicClusterName: "eks-blueprints-workshop-prod",
+          //   awsSecretName: "newrelic-pixie-combined"
+          // }))
         .addOns(prodBootstrapArgo)
         .clusterProvider(prodClusterProvider)}
         ]
