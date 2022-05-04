@@ -86,13 +86,13 @@ export default class PipelineConstruct extends Construct {
         id: "envs",
         stages: [
           { id: "dev", stackBuilder: blueprint.clone('us-east-1')
-          .addOns(new NewRelicAddOn({
-            version: "4.3.1-beta",
-            newRelicClusterName: "eks-blueprints-workshop-dev",
-            awsSecretName: "newrelic-pixie-combined",
-            installPixie: true,
-            installPixieIntegration: true
-          }))
+          // .addOns(new NewRelicAddOn({
+          //   version: "4.3.1-beta",
+          //   newRelicClusterName: "eks-blueprints-workshop-dev",
+          //   awsSecretName: "newrelic-pixie-combined",
+          //   installPixie: true,
+          //   installPixieIntegration: true
+          // }))
         .addOns(devBootstrapArgo)
         .clusterProvider(devClusterProvider)},
           { id: "prod", stackBuilder: blueprint.clone('us-west-2')
