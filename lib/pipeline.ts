@@ -87,9 +87,9 @@ export default class PipelineConstruct extends Construct {
         stages: [
           { id: "dev", stackBuilder: blueprint.clone('us-east-1')
           .addOns(new NewRelicAddOn({
-            newRelicClusterName: "eks-blueprints-workshop-dev",
-            awsSecretName: "my-eks-blueprints-workshop",
             version: "4.3.1-beta",
+            newRelicClusterName: "eks-blueprints-workshop-dev",
+            awsSecretName: "newrelic-pixie-combined",
             installPixie: true,
             installPixieIntegration: true
           }))
@@ -98,7 +98,7 @@ export default class PipelineConstruct extends Construct {
           { id: "prod", stackBuilder: blueprint.clone('us-west-2')
           .addOns(new NewRelicAddOn({
             newRelicClusterName: "eks-blueprints-workshop-prod",
-            awsSecretName: "my-eks-blueprints-workshop"
+            awsSecretName: "newrelic-pixie-combined"
           }))
         .addOns(prodBootstrapArgo)
         .clusterProvider(prodClusterProvider)}
