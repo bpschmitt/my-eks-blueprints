@@ -8,14 +8,18 @@ export default class PipelineConstruct extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps){
     super(scope,id)
 
+    // Set the parent AWS account and region
     const account = props?.env?.account!;
     const region = props?.env?.region!;
 
+    // Define some addons that will apply to all clusters
     const commonaddOns: Array<blueprints.ClusterAddOn> = [
       new blueprints.SecretsStoreAddOn,
       new blueprints.ClusterAutoScalerAddOn
     ];
 
+    // Customize the dev Cluster using a GenericClusterProvider
+    // In this example, SPOT instances are used to reduce cost
     const devClusterProvider = new blueprints.GenericClusterProvider({
       version: cdk.aws_eks.KubernetesVersion.V1_21,
       managedNodeGroups: [
@@ -28,6 +32,9 @@ export default class PipelineConstruct extends Construct {
       ]
     })
 
+    // Customize the prod Cluster using a GenericClusterProvider
+    // In this example, resiliency and performance are key so
+    // ONDEMOND Bottle Rocket instances are used.
     const prodClusterProvider = new blueprints.GenericClusterProvider({
       version: cdk.aws_eks.KubernetesVersion.V1_21,
       managedNodeGroups: [
@@ -39,6 +46,7 @@ export default class PipelineConstruct extends Construct {
       ]
     })
 
+    // Define the base blueprint
     const blueprint = blueprints.EksBlueprint.builder()
     .account(account)
     .region(region)
@@ -80,7 +88,9 @@ export default class PipelineConstruct extends Construct {
           { id: "dev", stackBuilder: blueprint.clone('us-east-1')
           .addOns(new NewRelicAddOn({
             newRelicClusterName: "eks-blueprints-workshop-dev",
-            awsSecretName: "my-eks-blueprints-workshop"
+            awsSecretName: "my-eks-blueprints-workshop",
+            installPixie: true,
+            installPixieIntegration: true
           }))
         .addOns(devBootstrapArgo)
         .clusterProvider(devClusterProvider)},
