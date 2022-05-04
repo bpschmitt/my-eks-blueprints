@@ -89,6 +89,7 @@ export default class PipelineConstruct extends Construct {
           .addOns(new NewRelicAddOn({
             newRelicClusterName: "eks-blueprints-workshop-dev",
             awsSecretName: "my-eks-blueprints-workshop",
+            version: "4.3.1-beta",
             installPixie: true,
             installPixieIntegration: true
           }))
